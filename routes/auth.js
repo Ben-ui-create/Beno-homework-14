@@ -28,7 +28,7 @@ router.post(
 
 router.get(
   '/me',
-  authorization,,
+  authorization,
   controller.me,
 );
 
