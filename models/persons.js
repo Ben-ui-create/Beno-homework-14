@@ -58,27 +58,32 @@ export async function update(id, data) {
 
 export async function deletePerson(id) {
   try {
-    const [ordersBefore] = await DbMysql.query(
+    const [[result]] = await DbMysql.query(
       `
           SELECT COUNT(*) AS count
           FROM Orders
           WHERE PersonID = ?
-      `, [id]);
+      `,
+      [id]
+    );
 
-    const count = _.get(ordersBefore, '[0].count', 0);
+    const count = result.count;
 
-    const [result = null] = await DbMysql.query(
-      `            DELETE
-                   FROM Persons
-                   WHERE PersonID = ?;`, [id]);
+    const [res] = await DbMysql.query(
+      `
+          DELETE FROM Persons
+          WHERE PersonID = ?
+      `,
+      [id]
+    );
 
-    if (result.affectedRows === 0) {
+    if (res.affectedRows === 0) {
       return null;
     }
 
     return {
       deleted: true,
-      count: count,
+      count,
     };
   } catch (e) {
     console.error(e);

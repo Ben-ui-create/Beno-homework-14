@@ -51,18 +51,17 @@ export default {
       next(e);
     }
   },
-
   async deletePerson(req, res, next) {
     try {
-      const person = await Persons.deletePerson(req.params.id);
+      const result = await Persons.deletePerson(req.params.id);
 
-      if (!person) {
-        throw new HttpErrors(500, 'Failed to delete person');
+      if (!result) {
+        throw new HttpErrors(404, 'Person not found');
       }
 
       res.json({
         message: 'Person deleted successfully',
-        count: person.count,
+        countOrders: result.count,
       });
     } catch (e) {
       next(e);
