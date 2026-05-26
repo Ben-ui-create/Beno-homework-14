@@ -1,11 +1,8 @@
 import 'dotenv/config';
 import morgan from 'morgan';
-import path from 'path';
 import express from 'express';
 import {createServer} from 'http';
 import cookieParser from 'cookie-parser';
-
-import './migrate.js';
 
 import routes from './routes/index.js';
 import errorHandler from './middlewares/errorHandler.js';
