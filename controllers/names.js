@@ -35,7 +35,7 @@ export default {
     } catch (e) {
       next(e);
     }
-  }
+  },
 
   async getAll(req, res, next) {
     try {

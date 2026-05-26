@@ -5,6 +5,12 @@ import controller from '../controllers/names.js';
 
 const router = Router();
 
+router.post(
+  '/create',
+  authorization,
+  controller.create,
+);
+
 router.get(
   '/unique',
   authorization,
