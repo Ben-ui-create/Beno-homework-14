@@ -65,7 +65,8 @@ export async function deleteCustomer(id) {
     const [result = null] = await DbMysql.query(
       `            DELETE
                    FROM Customers
-                   WHERE CustomerID = ?;`);
+                   WHERE CustomerID = ?;
+`, [id]);
 
     return result.affectedRows > 0;
   } catch (e) {
