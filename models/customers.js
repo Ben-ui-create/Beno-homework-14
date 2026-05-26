@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import DbMysql from "../clients/db.mysql.js";
 
 export async function create(customer) {
