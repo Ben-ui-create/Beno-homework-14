@@ -1,4 +1,3 @@
-// seed.js
 import 'dotenv/config';
 import DbMysql from './clients/db.mysql.js';
 
