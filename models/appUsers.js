@@ -8,7 +8,7 @@ export async function findById(id) {
   try {
     const [result = null] = (await DbMysql.query(
       `SELECT *
-       FROM users
+       FROM app_users
        WHERE id = ?
        limit 1;`,
       [id]
@@ -25,7 +25,7 @@ export async function findByEmail(email) {
   try {
     const [result = null] = (await DbMysql.query(
       `SELECT *
-       FROM users
+       FROM app_users
        WHERE email = ?
        limit 1;`,
       [email]
@@ -42,7 +42,7 @@ export async function checkEmailUnique(email) {
   try {
     const [result = null] = (await DbMysql.query(
       `SELECT *
-       FROM users
+       FROM app_users
        WHERE email = ?
        limit 1;`,
       [email]
@@ -55,12 +55,12 @@ export async function checkEmailUnique(email) {
   }
 }
 
-export async function create({ name, age, email, password }) {
+export async function create({ name, email, password }) {
   try {
     const result = await DbMysql.query(
-      `insert into users (name, age, email, password)
-       values (?, ?, ?, ?);`,
-      [name, age, email, password]
+      `insert into app_users (name, email, password)
+       values (?, ?, ?);`,
+      [name, email, password]
     );
 
     const id = _.get(result, '0.insertId', null);
@@ -76,7 +76,7 @@ export async function update(id, { name, age }, returnData = false) {
   try {
     const result = await DbMysql.query(
       `
-          update users
+          update app_users
           set name = ?,
               age  = ?
           WHERE id = ?;

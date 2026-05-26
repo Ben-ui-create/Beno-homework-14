@@ -15,7 +15,7 @@ router.post(
 );
 
 router.post(
-  'login',
+  '/login',
   validation(schema.login, 'body'),
   controller.login,
 );
