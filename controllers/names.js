@@ -20,6 +20,23 @@ export default {
     }
   },
 
+  async create(req, res, next) {
+    try {
+      const name = await Names.create(req.body);
+
+      if (!name) {
+        throw new HttpErrors(500, 'Failed to create name');
+      }
+
+      res.json({
+        message: 'Name created successfully.',
+        name,
+      })
+    } catch (e) {
+      next(e);
+    }
+  }
+
   async getAll(req, res, next) {
     try {
       const names = await Names.getAll();

@@ -75,7 +75,6 @@ export async function getByLast() {
 
 export default {
   create,
-  findAll,
   getUnique,
   getByLast,
   getAll,
