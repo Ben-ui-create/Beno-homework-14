@@ -1,5 +1,4 @@
 import DbMysql from "../clients/db.mysql.js";
-import _ from 'lodash';
 
 export async function create(person) {
   try {

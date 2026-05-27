@@ -4,7 +4,6 @@ import controller from '../controllers/persons.js';
 
 import authorization from "../middlewares/authorization.js";
 import validation from '../middlewares/validation.js';
-import ordersSchema from '../middlewares/schemas/orders.schema.js';
 import personsSchema from '../middlewares/schemas/persons.schema.js';
 
 const router = new Router();

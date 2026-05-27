@@ -100,7 +100,7 @@ export default {
         signed: true,
         httpOnly: true,
         sameSite: 'lax',
-        secure: process.env.NODE_ENV === 'production',
+        secure: NODE_ENV === 'production',
       });
 
       res.json({
