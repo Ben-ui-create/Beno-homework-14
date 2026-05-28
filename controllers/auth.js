@@ -1,9 +1,6 @@
 import HttpErrors from "http-errors";
-import jwt from 'jsonwebtoken';
 
 import Users from '../models/appUsers.js';
-
-const {JWT_SECRET, NODE_ENV, COOKIE_MAX_AGE} = process.env;
 
 export default {
   async login(req, res, next) {
@@ -20,28 +17,17 @@ export default {
         });
       }
 
-      const token = jwt.sign(
-        { userId: user.id },
-      JWT_SECRET,
-        { expiresIn: "24h" },
-      );
+      req.session.user = {
+        id: user.id,
+        username: user.name,
+        email: user.email,
+      };
 
       delete user.password;
 
-      res.cookie('token', token, {
-        signed: true,
-        httpOnly: true,
-        sameSite: 'lax',
-        secure: NODE_ENV === 'production',
-        maxAge: Number(COOKIE_MAX_AGE),
-      });
-
       res.status(200).json({
-        user: {
-          id: user.id,
-          name: user.name,
-          email: user.email,
-        },
+        message: 'Logged in',
+        user: req.session.user,
       });
     } catch (e) {
       next(e);
@@ -80,11 +66,21 @@ export default {
 
   async me(req, res, next) {
     try {
-      const user = await Users.findById(req.userId);
+      if (!req.session.user) {
+        throw new HttpErrors(401, {
+          message: 'Unauthorized',
+        });
+      }
+
+      const user = await Users.findById(req.session.user.id);
 
       if (!user) {
-        throw new HttpErrors(404, 'User not found');
+        throw new HttpErrors(401, {
+          message: 'Users not found',
+        });
       }
+
+      delete user.password;
 
       res.json({
         user,
@@ -96,16 +92,19 @@ export default {
 
   async logout(req, res, next) {
     try {
-      res.clearCookie('token', {
-        signed: true,
-        httpOnly: true,
-        sameSite: 'lax',
-        secure: NODE_ENV === 'production',
+      req.session.destroy((err) => {
+        if (err) {
+          next(err);
+          return;
+        }
+
+        res.clearCookie('cookie.sid');
+
+        res.json({
+          message: 'Logged out',
+        });
       });
 
-      res.json({
-        message: 'Logged out',
-      });
     } catch (error) {
       next(error);
     }

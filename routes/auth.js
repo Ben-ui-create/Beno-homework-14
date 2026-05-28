@@ -2,7 +2,6 @@ import {Router} from 'express';
 
 import controller from '../controllers/auth.js';
 
-import authorization from "../middlewares/authorization.js";
 import validation from '../middlewares/validation.js';
 import schema from '../middlewares/schemas/auth.schema.js';
 
@@ -22,13 +21,11 @@ router.post(
 
 router.post(
   '/logout',
-  authorization,
   controller.logout,
 );
 
 router.get(
   '/me',
-  authorization,
   controller.me,
 );
 
